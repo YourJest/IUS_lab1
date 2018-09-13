@@ -43,23 +43,23 @@ volatile unsigned long i, j;
 }
 void first_animation(){
 	int i;
-	unsigned char leds_reg = 0x03;
+	unsigned char leds_reg = 0xC0;
 	for(i = 0; i <= 10; i++){
 		if(read_max(EXT_LO) != 0x33){
 			return;
 		}else{
 			leds(leds_reg); delay(300);
 			if(i < 7){
-				leds_reg <<= 1;
-			}else{
 				leds_reg >>= 1;
+			}else{
+				leds_reg <<= 1;
 			}
 		}
 	}
 }
 void second_animation(){
 	int i;
-	unsigned char leds_reg = 0x80;
+	unsigned char leds_reg = 0x01;
 	for(i = 0; i <= 10; i++){
 	if(read_max(EXT_LO) != 0xCC){
 		return;
