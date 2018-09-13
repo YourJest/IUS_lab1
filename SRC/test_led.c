@@ -50,9 +50,9 @@ void first_animation(){
 		}else{
 			leds(leds_reg); delay(300);
 			if(i < 7){
-				leds_reg << 1;
+				leds_reg <<= 1;
 			}else{
-				leds_reg >> 1;
+				leds_reg >>= 1;
 			}
 		}
 	}
@@ -66,9 +66,9 @@ void second_animation(){
 	}else{
 		leds(leds_reg); delay(300);
 		if(i < 8){
-			leds_reg >> 1;
+			leds_reg >>= 1;
 		}else{
-			leds_reg << 1;
+			leds_reg <<= 1;
 		}
 	}
 	}
