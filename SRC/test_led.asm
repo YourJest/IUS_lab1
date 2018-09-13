@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 2.9.0 #5416 (Mar 22 2009) (MINGW32)
-; This file was generated Tue Sep 11 15:55:30 2018
+; This file was generated Thu Sep 13 18:09:53 2018
 ;--------------------------------------------------------
 	.module test_led
 	.optsdcc -mmcs51 --model-small
@@ -545,23 +545,25 @@ _delay:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'first_animation'
 ;------------------------------------------------------------
-;i                         Allocated to registers r2 r3 
-;leds_reg                  Allocated to registers 
+;i                         Allocated to registers r3 r4 
+;leds_reg                  Allocated to registers r2 
 ;------------------------------------------------------------
 ;	SRC/test_led.c:44: void first_animation(){
 ;	-----------------------------------------
 ;	 function first_animation
 ;	-----------------------------------------
 _first_animation:
+;	SRC/test_led.c:46: unsigned char leds_reg = 0xC0;
+	mov	r2,#0xC0
 ;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
-	mov	r2,#0x00
 	mov	r3,#0x00
+	mov	r4,#0x00
 00107$:
 	clr	c
 	mov	a,#0x0A
-	subb	a,r2
+	subb	a,r3
 	mov	a,#(0x00 ^ 0x80)
-	mov	b,r3
+	mov	b,r4
 	xrl	b,#0x80
 	subb	a,b
 	jc	00111$
@@ -569,59 +571,76 @@ _first_animation:
 	mov	dptr,#0x0002
 	push	ar2
 	push	ar3
+	push	ar4
 	lcall	_read_max
-	mov	r4,dpl
+	mov	r5,dpl
+	pop	ar4
 	pop	ar3
 	pop	ar2
 ;	SRC/test_led.c:49: return;
-	cjne	r4,#0x33,00111$
+	cjne	r5,#0x33,00111$
 ;	SRC/test_led.c:51: leds(leds_reg); delay(300);
-	mov	dpl,#0x03
+	mov	dpl,r2
 	push	ar2
 	push	ar3
+	push	ar4
 	lcall	_leds
 	mov	dptr,#0x012C
 	clr	a
 	mov	b,a
 	lcall	_delay
+	pop	ar4
 	pop	ar3
 	pop	ar2
 ;	SRC/test_led.c:52: if(i < 7){
 	clr	c
-	mov	a,r2
-	subb	a,#0x07
 	mov	a,r3
+	subb	a,#0x07
+	mov	a,r4
 	xrl	a,#0x80
 	subb	a,#0x80
-	clr	a
-	rlc	a
+	jnc	00102$
+;	SRC/test_led.c:53: leds_reg >>= 1;
+	mov	a,r2
+	clr	c
+	rrc	a
+	mov	r2,a
+	sjmp	00109$
+00102$:
+;	SRC/test_led.c:55: leds_reg <<= 1;
+	mov	a,r2
+	add	a,r2
+	mov	r2,a
+00109$:
 ;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
-	inc	r2
-	cjne	r2,#0x00,00107$
 	inc	r3
+	cjne	r3,#0x00,00107$
+	inc	r4
 	sjmp	00107$
 00111$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'second_animation'
 ;------------------------------------------------------------
-;i                         Allocated to registers r2 r3 
-;leds_reg                  Allocated to registers 
+;i                         Allocated to registers r3 r4 
+;leds_reg                  Allocated to registers r2 
 ;------------------------------------------------------------
 ;	SRC/test_led.c:60: void second_animation(){
 ;	-----------------------------------------
 ;	 function second_animation
 ;	-----------------------------------------
 _second_animation:
+;	SRC/test_led.c:62: unsigned char leds_reg = 0x01;
+	mov	r2,#0x01
 ;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
-	mov	r2,#0x00
 	mov	r3,#0x00
+	mov	r4,#0x00
 00107$:
 	clr	c
 	mov	a,#0x0A
-	subb	a,r2
+	subb	a,r3
 	mov	a,#(0x00 ^ 0x80)
-	mov	b,r3
+	mov	b,r4
 	xrl	b,#0x80
 	subb	a,b
 	jc	00111$
@@ -629,36 +648,51 @@ _second_animation:
 	mov	dptr,#0x0002
 	push	ar2
 	push	ar3
+	push	ar4
 	lcall	_read_max
-	mov	r4,dpl
+	mov	r5,dpl
+	pop	ar4
 	pop	ar3
 	pop	ar2
 ;	SRC/test_led.c:65: return;
-	cjne	r4,#0xCC,00111$
+	cjne	r5,#0xCC,00111$
 ;	SRC/test_led.c:67: leds(leds_reg); delay(300);
-	mov	dpl,#0x80
+	mov	dpl,r2
 	push	ar2
 	push	ar3
+	push	ar4
 	lcall	_leds
 	mov	dptr,#0x012C
 	clr	a
 	mov	b,a
 	lcall	_delay
+	pop	ar4
 	pop	ar3
 	pop	ar2
 ;	SRC/test_led.c:68: if(i < 8){
 	clr	c
-	mov	a,r2
-	subb	a,#0x08
 	mov	a,r3
+	subb	a,#0x08
+	mov	a,r4
 	xrl	a,#0x80
 	subb	a,#0x80
-	clr	a
-	rlc	a
+	jnc	00102$
+;	SRC/test_led.c:69: leds_reg >>= 1;
+	mov	a,r2
+	clr	c
+	rrc	a
+	mov	r2,a
+	sjmp	00109$
+00102$:
+;	SRC/test_led.c:71: leds_reg <<= 1;
+	mov	a,r2
+	add	a,r2
+	mov	r2,a
+00109$:
 ;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
-	inc	r2
-	cjne	r2,#0x00,00107$
 	inc	r3
+	cjne	r3,#0x00,00107$
+	inc	r4
 	sjmp	00107$
 00111$:
 	ret
