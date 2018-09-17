@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 2.9.0 #5416 (Mar 22 2009) (MINGW32)
-; This file was generated Thu Sep 13 18:09:53 2018
+; This file was generated Mon Sep 17 17:45:48 2018
 ;--------------------------------------------------------
 	.module test_led
 	.optsdcc -mmcs51 --model-small
@@ -545,28 +545,21 @@ _delay:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'first_animation'
 ;------------------------------------------------------------
-;i                         Allocated to registers r3 r4 
-;leds_reg                  Allocated to registers r2 
+;i                         Allocated to registers r2 r3 
+;leds_reg                  Allocated to registers r4 
 ;------------------------------------------------------------
 ;	SRC/test_led.c:44: void first_animation(){
 ;	-----------------------------------------
 ;	 function first_animation
 ;	-----------------------------------------
 _first_animation:
-;	SRC/test_led.c:46: unsigned char leds_reg = 0xC0;
-	mov	r2,#0xC0
-;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
+;	SRC/test_led.c:45: int i = 0;
+	mov	r2,#0x00
 	mov	r3,#0x00
-	mov	r4,#0x00
-00107$:
-	clr	c
-	mov	a,#0x0A
-	subb	a,r3
-	mov	a,#(0x00 ^ 0x80)
-	mov	b,r4
-	xrl	b,#0x80
-	subb	a,b
-	jc	00111$
+;	SRC/test_led.c:46: unsigned char leds_reg = 0xC0;
+	mov	r4,#0xC0
+;	SRC/test_led.c:47: while(1){
+00113$:
 ;	SRC/test_led.c:48: if(read_max(EXT_LO) != 0x33){
 	mov	dptr,#0x0002
 	push	ar2
@@ -578,73 +571,101 @@ _first_animation:
 	pop	ar3
 	pop	ar2
 ;	SRC/test_led.c:49: return;
-	cjne	r5,#0x33,00111$
-;	SRC/test_led.c:51: leds(leds_reg); delay(300);
-	mov	dpl,r2
+	cjne	r5,#0x33,00115$
+;	SRC/test_led.c:51: leds(leds_reg);
+	mov	dpl,r4
 	push	ar2
 	push	ar3
 	push	ar4
 	lcall	_leds
+	pop	ar4
+	pop	ar3
+	pop	ar2
+;	SRC/test_led.c:52: if(i < 6){
+	clr	c
+	mov	a,r2
+	subb	a,#0x06
+	mov	a,r3
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00107$
+;	SRC/test_led.c:53: leds_reg >>= 1;
+	mov	a,r4
+	clr	c
+	rrc	a
+	mov	r4,a
+;	SRC/test_led.c:54: i++;
+	inc	r2
+	cjne	r2,#0x00,00108$
+	inc	r3
+	sjmp	00108$
+00107$:
+;	SRC/test_led.c:55: }else if(i < 13){
+	clr	c
+	mov	a,r2
+	subb	a,#0x0D
+	mov	a,r3
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00104$
+;	SRC/test_led.c:56: leds_reg <<= 1;
+	mov	a,r4
+	add	a,r4
+	mov	r4,a
+;	SRC/test_led.c:57: i++;
+	inc	r2
+	cjne	r2,#0x00,00108$
+	inc	r3
+	sjmp	00108$
+00104$:
+;	SRC/test_led.c:58: }else if (i > 13){
+	clr	c
+	mov	a,#0x0D
+	subb	a,r2
+	mov	a,#(0x00 ^ 0x80)
+	mov	b,r3
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00108$
+;	SRC/test_led.c:59: i = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
+;	SRC/test_led.c:60: leds_reg = 0xC0;
+	mov	r4,#0xC0
+00108$:
+;	SRC/test_led.c:62: delay(300);
 	mov	dptr,#0x012C
 	clr	a
 	mov	b,a
+	push	ar2
+	push	ar3
+	push	ar4
 	lcall	_delay
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	SRC/test_led.c:52: if(i < 7){
-	clr	c
-	mov	a,r3
-	subb	a,#0x07
-	mov	a,r4
-	xrl	a,#0x80
-	subb	a,#0x80
-	jnc	00102$
-;	SRC/test_led.c:53: leds_reg >>= 1;
-	mov	a,r2
-	clr	c
-	rrc	a
-	mov	r2,a
-	sjmp	00109$
-00102$:
-;	SRC/test_led.c:55: leds_reg <<= 1;
-	mov	a,r2
-	add	a,r2
-	mov	r2,a
-00109$:
-;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
-	inc	r3
-	cjne	r3,#0x00,00107$
-	inc	r4
-	sjmp	00107$
-00111$:
+	ljmp	00113$
+00115$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'second_animation'
 ;------------------------------------------------------------
-;i                         Allocated to registers r3 r4 
-;leds_reg                  Allocated to registers r2 
+;i                         Allocated to registers r2 r3 
+;leds_reg                  Allocated to registers r4 
 ;------------------------------------------------------------
-;	SRC/test_led.c:60: void second_animation(){
+;	SRC/test_led.c:66: void second_animation(){
 ;	-----------------------------------------
 ;	 function second_animation
 ;	-----------------------------------------
 _second_animation:
-;	SRC/test_led.c:62: unsigned char leds_reg = 0x01;
-	mov	r2,#0x01
-;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
+;	SRC/test_led.c:67: int i = 0;
+	mov	r2,#0x00
 	mov	r3,#0x00
-	mov	r4,#0x00
-00107$:
-	clr	c
-	mov	a,#0x0A
-	subb	a,r3
-	mov	a,#(0x00 ^ 0x80)
-	mov	b,r4
-	xrl	b,#0x80
-	subb	a,b
-	jc	00111$
-;	SRC/test_led.c:64: if(read_max(EXT_LO) != 0xCC){
+;	SRC/test_led.c:68: unsigned char leds_reg = 0x01;
+	mov	r4,#0x01
+;	SRC/test_led.c:69: while(1){
+00113$:
+;	SRC/test_led.c:70: if(read_max(EXT_LO) != 0xCC){
 	mov	dptr,#0x0002
 	push	ar2
 	push	ar3
@@ -654,77 +675,104 @@ _second_animation:
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	SRC/test_led.c:65: return;
-	cjne	r5,#0xCC,00111$
-;	SRC/test_led.c:67: leds(leds_reg); delay(300);
-	mov	dpl,r2
+;	SRC/test_led.c:71: return;
+	cjne	r5,#0xCC,00115$
+;	SRC/test_led.c:73: leds(leds_reg);
+	mov	dpl,r4
 	push	ar2
 	push	ar3
 	push	ar4
 	lcall	_leds
+	pop	ar4
+	pop	ar3
+	pop	ar2
+;	SRC/test_led.c:74: if(i < 7){
+	clr	c
+	mov	a,r2
+	subb	a,#0x07
+	mov	a,r3
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00107$
+;	SRC/test_led.c:75: leds_reg >>= 1;
+	mov	a,r4
+	clr	c
+	rrc	a
+	mov	r4,a
+	sjmp	00108$
+00107$:
+;	SRC/test_led.c:76: }else if (i < 13){
+	clr	c
+	mov	a,r2
+	subb	a,#0x0D
+	mov	a,r3
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00104$
+;	SRC/test_led.c:77: leds_reg <<= 1;
+	mov	a,r4
+	add	a,r4
+	mov	r4,a
+	sjmp	00108$
+00104$:
+;	SRC/test_led.c:78: }else if(i > 13){
+	clr	c
+	mov	a,#0x0D
+	subb	a,r2
+	mov	a,#(0x00 ^ 0x80)
+	mov	b,r3
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00108$
+;	SRC/test_led.c:79: i = 0;
+	mov	r2,#0x00
+	mov	r3,#0x00
+;	SRC/test_led.c:80: leds_reg = 0x01;
+	mov	r4,#0x01
+00108$:
+;	SRC/test_led.c:82: delay(300);
 	mov	dptr,#0x012C
 	clr	a
 	mov	b,a
+	push	ar2
+	push	ar3
+	push	ar4
 	lcall	_delay
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	SRC/test_led.c:68: if(i < 8){
-	clr	c
-	mov	a,r3
-	subb	a,#0x08
-	mov	a,r4
-	xrl	a,#0x80
-	subb	a,#0x80
-	jnc	00102$
-;	SRC/test_led.c:69: leds_reg >>= 1;
-	mov	a,r2
-	clr	c
-	rrc	a
-	mov	r2,a
-	sjmp	00109$
-00102$:
-;	SRC/test_led.c:71: leds_reg <<= 1;
-	mov	a,r2
-	add	a,r2
-	mov	r2,a
-00109$:
-;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
-	inc	r3
-	cjne	r3,#0x00,00107$
-	inc	r4
-	sjmp	00107$
-00111$:
+	ljmp	00113$
+00115$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;dip_reg                   Allocated to registers r2 
 ;------------------------------------------------------------
-;	SRC/test_led.c:77: void main( void ){
+;	SRC/test_led.c:87: void main( void ){
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	SRC/test_led.c:79: while(1){
+;	SRC/test_led.c:89: while(1){
 00108$:
-;	SRC/test_led.c:80: dip_reg = read_max(EXT_LO);
+;	SRC/test_led.c:90: dip_reg = read_max(EXT_LO);
 	mov	dptr,#0x0002
 	lcall	_read_max
 	mov	r2,dpl
-;	SRC/test_led.c:81: if(dip_reg == 0x33){
+;	SRC/test_led.c:91: if(dip_reg == 0x33){
 	cjne	r2,#0x33,00105$
-;	SRC/test_led.c:82: first_animation();
+;	SRC/test_led.c:92: first_animation();
 	lcall	_first_animation
 	sjmp	00108$
 00105$:
-;	SRC/test_led.c:83: }else if(dip_reg == 0xCC){
+;	SRC/test_led.c:93: }else if(dip_reg == 0xCC){
 	cjne	r2,#0xCC,00102$
-;	SRC/test_led.c:84: second_animation();
+;	SRC/test_led.c:94: second_animation();
 	lcall	_second_animation
 	sjmp	00108$
 00102$:
-;	SRC/test_led.c:86: leds(dip_reg);
+;	SRC/test_led.c:96: leds(dip_reg);
 	mov	dpl,r2
 	lcall	_leds
 	sjmp	00108$

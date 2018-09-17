@@ -42,34 +42,44 @@ volatile unsigned long i, j;
 
 }
 void first_animation(){
-	int i;
+	int i = 0;
 	unsigned char leds_reg = 0xC0;
-	for(i = 0; i <= 10; i++){
+	while(1){
 		if(read_max(EXT_LO) != 0x33){
 			return;
 		}else{
-			leds(leds_reg); delay(300);
-			if(i < 7){
+			leds(leds_reg);
+			if(i < 6){
 				leds_reg >>= 1;
-			}else{
+				i++;
+			}else if(i < 13){
 				leds_reg <<= 1;
+				i++;
+			}else if (i > 13){
+				i = 0;
+				leds_reg = 0xC0;
 			}
+			delay(300);
 		}
 	}
 }
 void second_animation(){
-	int i;
+	int i = 0;
 	unsigned char leds_reg = 0x01;
-	for(i = 0; i <= 10; i++){
+	while(1){
 	if(read_max(EXT_LO) != 0xCC){
 		return;
 	}else{
-		leds(leds_reg); delay(300);
-		if(i < 8){
+		leds(leds_reg);
+		if(i < 7){
 			leds_reg >>= 1;
-		}else{
+		}else if (i < 13){
 			leds_reg <<= 1;
+		}else if(i > 13){
+			i = 0;
+			leds_reg = 0x01;
 		}
+		delay(300);
 	}
 	}
 }

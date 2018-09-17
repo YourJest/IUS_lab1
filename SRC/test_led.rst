@@ -1,7 +1,7 @@
                               1 ;--------------------------------------------------------
                               2 ; File Created by SDCC : free open source ANSI-C Compiler
                               3 ; Version 2.9.0 #5416 (Mar 22 2009) (MINGW32)
-                              4 ; This file was generated Thu Sep 13 18:09:53 2018
+                              4 ; This file was generated Mon Sep 17 17:45:48 2018
                               5 ;--------------------------------------------------------
                               6 	.module test_led
                               7 	.optsdcc -mmcs51 --model-small
@@ -407,7 +407,7 @@
                             407 	.area HOME    (CODE)
                             408 	.area HOME    (CODE)
    2103                     409 __sdcc_program_startup:
-   2103 12 23 27            410 	lcall	_main
+   2103 12 23 67            410 	lcall	_main
                             411 ;	return from main will lock up
    2106 80 FE               412 	sjmp .
                             413 ;--------------------------------------------------------
@@ -545,190 +545,238 @@
                             545 ;------------------------------------------------------------
                             546 ;Allocation info for local variables in function 'first_animation'
                             547 ;------------------------------------------------------------
-                            548 ;i                         Allocated to registers r3 r4 
-                            549 ;leds_reg                  Allocated to registers r2 
+                            548 ;i                         Allocated to registers r2 r3 
+                            549 ;leds_reg                  Allocated to registers r4 
                             550 ;------------------------------------------------------------
                             551 ;	SRC/test_led.c:44: void first_animation(){
                             552 ;	-----------------------------------------
                             553 ;	 function first_animation
                             554 ;	-----------------------------------------
    2263                     555 _first_animation:
-                            556 ;	SRC/test_led.c:46: unsigned char leds_reg = 0xC0;
-   2263 7A C0               557 	mov	r2,#0xC0
-                            558 ;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
-   2265 7B 00               559 	mov	r3,#0x00
-   2267 7C 00               560 	mov	r4,#0x00
-   2269                     561 00107$:
-   2269 C3                  562 	clr	c
-   226A 74 0A               563 	mov	a,#0x0A
-   226C 9B                  564 	subb	a,r3
-   226D 74 80               565 	mov	a,#(0x00 ^ 0x80)
-   226F 8C F0               566 	mov	b,r4
-   2271 63 F0 80            567 	xrl	b,#0x80
-   2274 95 F0               568 	subb	a,b
-   2276 40 4C               569 	jc	00111$
-                            570 ;	SRC/test_led.c:48: if(read_max(EXT_LO) != 0x33){
-   2278 90 00 02            571 	mov	dptr,#0x0002
-   227B C0 02               572 	push	ar2
-   227D C0 03               573 	push	ar3
-   227F C0 04               574 	push	ar4
-   2281 12 21 D3            575 	lcall	_read_max
-   2284 AD 82               576 	mov	r5,dpl
-   2286 D0 04               577 	pop	ar4
-   2288 D0 03               578 	pop	ar3
-   228A D0 02               579 	pop	ar2
-                            580 ;	SRC/test_led.c:49: return;
-   228C BD 33 35            581 	cjne	r5,#0x33,00111$
-                            582 ;	SRC/test_led.c:51: leds(leds_reg); delay(300);
-   228F 8A 82               583 	mov	dpl,r2
-   2291 C0 02               584 	push	ar2
-   2293 C0 03               585 	push	ar3
-   2295 C0 04               586 	push	ar4
-   2297 12 21 AA            587 	lcall	_leds
-   229A 90 01 2C            588 	mov	dptr,#0x012C
-   229D E4                  589 	clr	a
-   229E F5 F0               590 	mov	b,a
-   22A0 12 21 DF            591 	lcall	_delay
-   22A3 D0 04               592 	pop	ar4
-   22A5 D0 03               593 	pop	ar3
-   22A7 D0 02               594 	pop	ar2
-                            595 ;	SRC/test_led.c:52: if(i < 7){
-   22A9 C3                  596 	clr	c
-   22AA EB                  597 	mov	a,r3
-   22AB 94 07               598 	subb	a,#0x07
-   22AD EC                  599 	mov	a,r4
-   22AE 64 80               600 	xrl	a,#0x80
-   22B0 94 80               601 	subb	a,#0x80
-   22B2 50 06               602 	jnc	00102$
-                            603 ;	SRC/test_led.c:53: leds_reg >>= 1;
-   22B4 EA                  604 	mov	a,r2
-   22B5 C3                  605 	clr	c
-   22B6 13                  606 	rrc	a
-   22B7 FA                  607 	mov	r2,a
-   22B8 80 03               608 	sjmp	00109$
-   22BA                     609 00102$:
-                            610 ;	SRC/test_led.c:55: leds_reg <<= 1;
-   22BA EA                  611 	mov	a,r2
-   22BB 2A                  612 	add	a,r2
-   22BC FA                  613 	mov	r2,a
-   22BD                     614 00109$:
-                            615 ;	SRC/test_led.c:47: for(i = 0; i <= 10; i++){
-   22BD 0B                  616 	inc	r3
-   22BE BB 00 A8            617 	cjne	r3,#0x00,00107$
-   22C1 0C                  618 	inc	r4
-   22C2 80 A5               619 	sjmp	00107$
-   22C4                     620 00111$:
-   22C4 22                  621 	ret
-                            622 ;------------------------------------------------------------
-                            623 ;Allocation info for local variables in function 'second_animation'
-                            624 ;------------------------------------------------------------
-                            625 ;i                         Allocated to registers r3 r4 
-                            626 ;leds_reg                  Allocated to registers r2 
-                            627 ;------------------------------------------------------------
-                            628 ;	SRC/test_led.c:60: void second_animation(){
-                            629 ;	-----------------------------------------
-                            630 ;	 function second_animation
-                            631 ;	-----------------------------------------
-   22C5                     632 _second_animation:
-                            633 ;	SRC/test_led.c:62: unsigned char leds_reg = 0x01;
-   22C5 7A 01               634 	mov	r2,#0x01
-                            635 ;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
-   22C7 7B 00               636 	mov	r3,#0x00
-   22C9 7C 00               637 	mov	r4,#0x00
-   22CB                     638 00107$:
-   22CB C3                  639 	clr	c
-   22CC 74 0A               640 	mov	a,#0x0A
-   22CE 9B                  641 	subb	a,r3
-   22CF 74 80               642 	mov	a,#(0x00 ^ 0x80)
-   22D1 8C F0               643 	mov	b,r4
-   22D3 63 F0 80            644 	xrl	b,#0x80
-   22D6 95 F0               645 	subb	a,b
-   22D8 40 4C               646 	jc	00111$
-                            647 ;	SRC/test_led.c:64: if(read_max(EXT_LO) != 0xCC){
-   22DA 90 00 02            648 	mov	dptr,#0x0002
-   22DD C0 02               649 	push	ar2
-   22DF C0 03               650 	push	ar3
-   22E1 C0 04               651 	push	ar4
-   22E3 12 21 D3            652 	lcall	_read_max
-   22E6 AD 82               653 	mov	r5,dpl
-   22E8 D0 04               654 	pop	ar4
-   22EA D0 03               655 	pop	ar3
-   22EC D0 02               656 	pop	ar2
-                            657 ;	SRC/test_led.c:65: return;
-   22EE BD CC 35            658 	cjne	r5,#0xCC,00111$
-                            659 ;	SRC/test_led.c:67: leds(leds_reg); delay(300);
-   22F1 8A 82               660 	mov	dpl,r2
-   22F3 C0 02               661 	push	ar2
-   22F5 C0 03               662 	push	ar3
-   22F7 C0 04               663 	push	ar4
-   22F9 12 21 AA            664 	lcall	_leds
-   22FC 90 01 2C            665 	mov	dptr,#0x012C
-   22FF E4                  666 	clr	a
-   2300 F5 F0               667 	mov	b,a
-   2302 12 21 DF            668 	lcall	_delay
-   2305 D0 04               669 	pop	ar4
-   2307 D0 03               670 	pop	ar3
-   2309 D0 02               671 	pop	ar2
-                            672 ;	SRC/test_led.c:68: if(i < 8){
-   230B C3                  673 	clr	c
-   230C EB                  674 	mov	a,r3
-   230D 94 08               675 	subb	a,#0x08
-   230F EC                  676 	mov	a,r4
-   2310 64 80               677 	xrl	a,#0x80
-   2312 94 80               678 	subb	a,#0x80
-   2314 50 06               679 	jnc	00102$
-                            680 ;	SRC/test_led.c:69: leds_reg >>= 1;
-   2316 EA                  681 	mov	a,r2
-   2317 C3                  682 	clr	c
-   2318 13                  683 	rrc	a
-   2319 FA                  684 	mov	r2,a
-   231A 80 03               685 	sjmp	00109$
-   231C                     686 00102$:
-                            687 ;	SRC/test_led.c:71: leds_reg <<= 1;
-   231C EA                  688 	mov	a,r2
-   231D 2A                  689 	add	a,r2
-   231E FA                  690 	mov	r2,a
-   231F                     691 00109$:
-                            692 ;	SRC/test_led.c:63: for(i = 0; i <= 10; i++){
-   231F 0B                  693 	inc	r3
-   2320 BB 00 A8            694 	cjne	r3,#0x00,00107$
-   2323 0C                  695 	inc	r4
-   2324 80 A5               696 	sjmp	00107$
-   2326                     697 00111$:
-   2326 22                  698 	ret
-                            699 ;------------------------------------------------------------
-                            700 ;Allocation info for local variables in function 'main'
-                            701 ;------------------------------------------------------------
-                            702 ;dip_reg                   Allocated to registers r2 
-                            703 ;------------------------------------------------------------
-                            704 ;	SRC/test_led.c:77: void main( void ){
-                            705 ;	-----------------------------------------
-                            706 ;	 function main
-                            707 ;	-----------------------------------------
-   2327                     708 _main:
-                            709 ;	SRC/test_led.c:79: while(1){
-   2327                     710 00108$:
-                            711 ;	SRC/test_led.c:80: dip_reg = read_max(EXT_LO);
-   2327 90 00 02            712 	mov	dptr,#0x0002
-   232A 12 21 D3            713 	lcall	_read_max
-   232D AA 82               714 	mov	r2,dpl
-                            715 ;	SRC/test_led.c:81: if(dip_reg == 0x33){
-   232F BA 33 05            716 	cjne	r2,#0x33,00105$
-                            717 ;	SRC/test_led.c:82: first_animation();
-   2332 12 22 63            718 	lcall	_first_animation
-   2335 80 F0               719 	sjmp	00108$
-   2337                     720 00105$:
-                            721 ;	SRC/test_led.c:83: }else if(dip_reg == 0xCC){
-   2337 BA CC 05            722 	cjne	r2,#0xCC,00102$
-                            723 ;	SRC/test_led.c:84: second_animation();
-   233A 12 22 C5            724 	lcall	_second_animation
-   233D 80 E8               725 	sjmp	00108$
-   233F                     726 00102$:
-                            727 ;	SRC/test_led.c:86: leds(dip_reg);
-   233F 8A 82               728 	mov	dpl,r2
-   2341 12 21 AA            729 	lcall	_leds
-   2344 80 E1               730 	sjmp	00108$
-                            731 	.area CSEG    (CODE)
-                            732 	.area CONST   (CODE)
-                            733 	.area XINIT   (CODE)
-                            734 	.area CABS    (ABS,CODE)
+                            556 ;	SRC/test_led.c:45: int i = 0;
+   2263 7A 00               557 	mov	r2,#0x00
+   2265 7B 00               558 	mov	r3,#0x00
+                            559 ;	SRC/test_led.c:46: unsigned char leds_reg = 0xC0;
+   2267 7C C0               560 	mov	r4,#0xC0
+                            561 ;	SRC/test_led.c:47: while(1){
+   2269                     562 00113$:
+                            563 ;	SRC/test_led.c:48: if(read_max(EXT_LO) != 0x33){
+   2269 90 00 02            564 	mov	dptr,#0x0002
+   226C C0 02               565 	push	ar2
+   226E C0 03               566 	push	ar3
+   2270 C0 04               567 	push	ar4
+   2272 12 21 D3            568 	lcall	_read_max
+   2275 AD 82               569 	mov	r5,dpl
+   2277 D0 04               570 	pop	ar4
+   2279 D0 03               571 	pop	ar3
+   227B D0 02               572 	pop	ar2
+                            573 ;	SRC/test_led.c:49: return;
+   227D BD 33 69            574 	cjne	r5,#0x33,00115$
+                            575 ;	SRC/test_led.c:51: leds(leds_reg);
+   2280 8C 82               576 	mov	dpl,r4
+   2282 C0 02               577 	push	ar2
+   2284 C0 03               578 	push	ar3
+   2286 C0 04               579 	push	ar4
+   2288 12 21 AA            580 	lcall	_leds
+   228B D0 04               581 	pop	ar4
+   228D D0 03               582 	pop	ar3
+   228F D0 02               583 	pop	ar2
+                            584 ;	SRC/test_led.c:52: if(i < 6){
+   2291 C3                  585 	clr	c
+   2292 EA                  586 	mov	a,r2
+   2293 94 06               587 	subb	a,#0x06
+   2295 EB                  588 	mov	a,r3
+   2296 64 80               589 	xrl	a,#0x80
+   2298 94 80               590 	subb	a,#0x80
+   229A 50 0B               591 	jnc	00107$
+                            592 ;	SRC/test_led.c:53: leds_reg >>= 1;
+   229C EC                  593 	mov	a,r4
+   229D C3                  594 	clr	c
+   229E 13                  595 	rrc	a
+   229F FC                  596 	mov	r4,a
+                            597 ;	SRC/test_led.c:54: i++;
+   22A0 0A                  598 	inc	r2
+   22A1 BA 00 2D            599 	cjne	r2,#0x00,00108$
+   22A4 0B                  600 	inc	r3
+   22A5 80 2A               601 	sjmp	00108$
+   22A7                     602 00107$:
+                            603 ;	SRC/test_led.c:55: }else if(i < 13){
+   22A7 C3                  604 	clr	c
+   22A8 EA                  605 	mov	a,r2
+   22A9 94 0D               606 	subb	a,#0x0D
+   22AB EB                  607 	mov	a,r3
+   22AC 64 80               608 	xrl	a,#0x80
+   22AE 94 80               609 	subb	a,#0x80
+   22B0 50 0A               610 	jnc	00104$
+                            611 ;	SRC/test_led.c:56: leds_reg <<= 1;
+   22B2 EC                  612 	mov	a,r4
+   22B3 2C                  613 	add	a,r4
+   22B4 FC                  614 	mov	r4,a
+                            615 ;	SRC/test_led.c:57: i++;
+   22B5 0A                  616 	inc	r2
+   22B6 BA 00 18            617 	cjne	r2,#0x00,00108$
+   22B9 0B                  618 	inc	r3
+   22BA 80 15               619 	sjmp	00108$
+   22BC                     620 00104$:
+                            621 ;	SRC/test_led.c:58: }else if (i > 13){
+   22BC C3                  622 	clr	c
+   22BD 74 0D               623 	mov	a,#0x0D
+   22BF 9A                  624 	subb	a,r2
+   22C0 74 80               625 	mov	a,#(0x00 ^ 0x80)
+   22C2 8B F0               626 	mov	b,r3
+   22C4 63 F0 80            627 	xrl	b,#0x80
+   22C7 95 F0               628 	subb	a,b
+   22C9 50 06               629 	jnc	00108$
+                            630 ;	SRC/test_led.c:59: i = 0;
+   22CB 7A 00               631 	mov	r2,#0x00
+   22CD 7B 00               632 	mov	r3,#0x00
+                            633 ;	SRC/test_led.c:60: leds_reg = 0xC0;
+   22CF 7C C0               634 	mov	r4,#0xC0
+   22D1                     635 00108$:
+                            636 ;	SRC/test_led.c:62: delay(300);
+   22D1 90 01 2C            637 	mov	dptr,#0x012C
+   22D4 E4                  638 	clr	a
+   22D5 F5 F0               639 	mov	b,a
+   22D7 C0 02               640 	push	ar2
+   22D9 C0 03               641 	push	ar3
+   22DB C0 04               642 	push	ar4
+   22DD 12 21 DF            643 	lcall	_delay
+   22E0 D0 04               644 	pop	ar4
+   22E2 D0 03               645 	pop	ar3
+   22E4 D0 02               646 	pop	ar2
+   22E6 02 22 69            647 	ljmp	00113$
+   22E9                     648 00115$:
+   22E9 22                  649 	ret
+                            650 ;------------------------------------------------------------
+                            651 ;Allocation info for local variables in function 'second_animation'
+                            652 ;------------------------------------------------------------
+                            653 ;i                         Allocated to registers r2 r3 
+                            654 ;leds_reg                  Allocated to registers r4 
+                            655 ;------------------------------------------------------------
+                            656 ;	SRC/test_led.c:66: void second_animation(){
+                            657 ;	-----------------------------------------
+                            658 ;	 function second_animation
+                            659 ;	-----------------------------------------
+   22EA                     660 _second_animation:
+                            661 ;	SRC/test_led.c:67: int i = 0;
+   22EA 7A 00               662 	mov	r2,#0x00
+   22EC 7B 00               663 	mov	r3,#0x00
+                            664 ;	SRC/test_led.c:68: unsigned char leds_reg = 0x01;
+   22EE 7C 01               665 	mov	r4,#0x01
+                            666 ;	SRC/test_led.c:69: while(1){
+   22F0                     667 00113$:
+                            668 ;	SRC/test_led.c:70: if(read_max(EXT_LO) != 0xCC){
+   22F0 90 00 02            669 	mov	dptr,#0x0002
+   22F3 C0 02               670 	push	ar2
+   22F5 C0 03               671 	push	ar3
+   22F7 C0 04               672 	push	ar4
+   22F9 12 21 D3            673 	lcall	_read_max
+   22FC AD 82               674 	mov	r5,dpl
+   22FE D0 04               675 	pop	ar4
+   2300 D0 03               676 	pop	ar3
+   2302 D0 02               677 	pop	ar2
+                            678 ;	SRC/test_led.c:71: return;
+   2304 BD CC 5F            679 	cjne	r5,#0xCC,00115$
+                            680 ;	SRC/test_led.c:73: leds(leds_reg);
+   2307 8C 82               681 	mov	dpl,r4
+   2309 C0 02               682 	push	ar2
+   230B C0 03               683 	push	ar3
+   230D C0 04               684 	push	ar4
+   230F 12 21 AA            685 	lcall	_leds
+   2312 D0 04               686 	pop	ar4
+   2314 D0 03               687 	pop	ar3
+   2316 D0 02               688 	pop	ar2
+                            689 ;	SRC/test_led.c:74: if(i < 7){
+   2318 C3                  690 	clr	c
+   2319 EA                  691 	mov	a,r2
+   231A 94 07               692 	subb	a,#0x07
+   231C EB                  693 	mov	a,r3
+   231D 64 80               694 	xrl	a,#0x80
+   231F 94 80               695 	subb	a,#0x80
+   2321 50 06               696 	jnc	00107$
+                            697 ;	SRC/test_led.c:75: leds_reg >>= 1;
+   2323 EC                  698 	mov	a,r4
+   2324 C3                  699 	clr	c
+   2325 13                  700 	rrc	a
+   2326 FC                  701 	mov	r4,a
+   2327 80 25               702 	sjmp	00108$
+   2329                     703 00107$:
+                            704 ;	SRC/test_led.c:76: }else if (i < 13){
+   2329 C3                  705 	clr	c
+   232A EA                  706 	mov	a,r2
+   232B 94 0D               707 	subb	a,#0x0D
+   232D EB                  708 	mov	a,r3
+   232E 64 80               709 	xrl	a,#0x80
+   2330 94 80               710 	subb	a,#0x80
+   2332 50 05               711 	jnc	00104$
+                            712 ;	SRC/test_led.c:77: leds_reg <<= 1;
+   2334 EC                  713 	mov	a,r4
+   2335 2C                  714 	add	a,r4
+   2336 FC                  715 	mov	r4,a
+   2337 80 15               716 	sjmp	00108$
+   2339                     717 00104$:
+                            718 ;	SRC/test_led.c:78: }else if(i > 13){
+   2339 C3                  719 	clr	c
+   233A 74 0D               720 	mov	a,#0x0D
+   233C 9A                  721 	subb	a,r2
+   233D 74 80               722 	mov	a,#(0x00 ^ 0x80)
+   233F 8B F0               723 	mov	b,r3
+   2341 63 F0 80            724 	xrl	b,#0x80
+   2344 95 F0               725 	subb	a,b
+   2346 50 06               726 	jnc	00108$
+                            727 ;	SRC/test_led.c:79: i = 0;
+   2348 7A 00               728 	mov	r2,#0x00
+   234A 7B 00               729 	mov	r3,#0x00
+                            730 ;	SRC/test_led.c:80: leds_reg = 0x01;
+   234C 7C 01               731 	mov	r4,#0x01
+   234E                     732 00108$:
+                            733 ;	SRC/test_led.c:82: delay(300);
+   234E 90 01 2C            734 	mov	dptr,#0x012C
+   2351 E4                  735 	clr	a
+   2352 F5 F0               736 	mov	b,a
+   2354 C0 02               737 	push	ar2
+   2356 C0 03               738 	push	ar3
+   2358 C0 04               739 	push	ar4
+   235A 12 21 DF            740 	lcall	_delay
+   235D D0 04               741 	pop	ar4
+   235F D0 03               742 	pop	ar3
+   2361 D0 02               743 	pop	ar2
+   2363 02 22 F0            744 	ljmp	00113$
+   2366                     745 00115$:
+   2366 22                  746 	ret
+                            747 ;------------------------------------------------------------
+                            748 ;Allocation info for local variables in function 'main'
+                            749 ;------------------------------------------------------------
+                            750 ;dip_reg                   Allocated to registers r2 
+                            751 ;------------------------------------------------------------
+                            752 ;	SRC/test_led.c:87: void main( void ){
+                            753 ;	-----------------------------------------
+                            754 ;	 function main
+                            755 ;	-----------------------------------------
+   2367                     756 _main:
+                            757 ;	SRC/test_led.c:89: while(1){
+   2367                     758 00108$:
+                            759 ;	SRC/test_led.c:90: dip_reg = read_max(EXT_LO);
+   2367 90 00 02            760 	mov	dptr,#0x0002
+   236A 12 21 D3            761 	lcall	_read_max
+   236D AA 82               762 	mov	r2,dpl
+                            763 ;	SRC/test_led.c:91: if(dip_reg == 0x33){
+   236F BA 33 05            764 	cjne	r2,#0x33,00105$
+                            765 ;	SRC/test_led.c:92: first_animation();
+   2372 12 22 63            766 	lcall	_first_animation
+   2375 80 F0               767 	sjmp	00108$
+   2377                     768 00105$:
+                            769 ;	SRC/test_led.c:93: }else if(dip_reg == 0xCC){
+   2377 BA CC 05            770 	cjne	r2,#0xCC,00102$
+                            771 ;	SRC/test_led.c:94: second_animation();
+   237A 12 22 EA            772 	lcall	_second_animation
+   237D 80 E8               773 	sjmp	00108$
+   237F                     774 00102$:
+                            775 ;	SRC/test_led.c:96: leds(dip_reg);
+   237F 8A 82               776 	mov	dpl,r2
+   2381 12 21 AA            777 	lcall	_leds
+   2384 80 E1               778 	sjmp	00108$
+                            779 	.area CSEG    (CODE)
+                            780 	.area CONST   (CODE)
+                            781 	.area XINIT   (CODE)
+                            782 	.area CABS    (ABS,CODE)
